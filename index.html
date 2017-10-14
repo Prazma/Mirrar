@@ -85,16 +85,15 @@
         height: 100vh;
       }
       button {
-        background-color: #f0f0f1;
+        background-color: #fff;
+        color: #2e2f33;
         border-color: #bfbfbf;
-        color: #6A6F73;
         transition: 0.25s;
         -webkit-transition: 0.25s;
         display: inline-block;
         border: 1px solid;
         text-decoration: none;
         padding: .75rem 1.5rem;
-        color: inherit;
         margin-top: 10px;
         width: 90%;
         font-size: .875rem;
@@ -109,11 +108,14 @@
     <div class="demo-frame">
       <div class="demo-container">
         <img style="display: none;" id="img" /><br>
-        <button onclick="gtd()"></button>
+        <button onclick="gtd()">new avatar</button>
       </div>
     </div>
     
     <script>
+      if(window.innerHeight > window.innerWidth){
+        document.getElementById("alrt").style.display = "block";
+      }
       $(window).on("orientationchange",function(){
         if(window.orientation == 0) {
           document.getElementById("alrt").style.display = "block";
