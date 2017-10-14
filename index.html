@@ -73,9 +73,32 @@
         top: -1000px;
       }
       #img {
-		margin-top: 80px;
-		width: 90%;
+        margin-top: 80px;
+        width: 90%;
         box-shadow: 0px 0px 10px #888888;
+      }
+      #alrt {
+        background: #2e2f33;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        height: 100vh;
+      }
+      button {
+        background-color: #f0f0f1;
+        border-color: #bfbfbf;
+        color: #6A6F73;
+        transition: 0.25s;
+        -webkit-transition: 0.25s;
+        display: inline-block;
+        border: 1px solid;
+        text-decoration: none;
+        padding: .75rem 1.5rem;
+        color: inherit;
+        margin-top: 10px;
+        width: 90%;
+        font-size: .875rem;
+        outline: none;
       }
     </style>
   </head>
@@ -85,74 +108,87 @@
     </div>
     <div class="demo-frame">
       <div class="demo-container">
-        <img id="img" src="assets/faces.jpg" />
+        <img style="display: none;" id="img" /><br>
+        <button onclick="gtd()"></button>
       </div>
     </div>
     
     <script>
-      window.onload = function() {
-      var img = document.getElementById('img');
-
-      var tracker = new tracking.ObjectTracker(['face']);
-      tracker.setStepSize(1.7);
-      var tracker2 = new tracking.ObjectTracker(['eye']);
-      tracker2.setStepSize(1.7);
-      var tracker3 = new tracking.ObjectTracker(['mouth']);
-      tracker3.setStepSize(1.7);
-
-      tracking.track('#img', tracker);
-      tracking.track('#img', tracker2);
-      tracking.track('#img', tracker3);
-
-      tracker.on('track', function(event) {
-        event.data.forEach(function(rect) {
-          window.plot(rect.x, rect.y, rect.width, rect.height);
-        });
+      $(window).on("orientationchange",function(){
+        if(window.orientation == 0) {
+          document.getElementById("alrt").style.display = "block";
+        } else {
+          document.getElementById("alrt").style.display = "none";
+        }
+      }
+      $("button").click(function(){
+        var clicky = new Audio("assets/click.mp3");
+        clicky.play();
       });
-		  
-		  tracker2.on('track', function(event) {
-        event.data.forEach(function(rect) {
-          window.plot2(rect.x, rect.y, rect.width, rect.height);
-        });
-      });
-		  
-		  tracker3.on('track', function(event) {
-        event.data.forEach(function(rect) {
-          window.plot3(rect.x, rect.y, rect.width, rect.height);
-        });
-      });
+      function analyzeFace() {
+        var img = document.getElementById('img');
+        var tracker = new tracking.ObjectTracker(['face']);
+        tracker.setStepSize(1.7);
+        var tracker2 = new tracking.ObjectTracker(['eye']);
+        tracker2.setStepSize(1.7);
+        var tracker3 = new tracking.ObjectTracker(['mouth']);
+        tracker3.setStepSize(1.7);
 
-      window.plot = function(x, y, w, h) {
-        var rect = document.createElement('div');
-        document.querySelector('.demo-container').appendChild(rect);
-        rect.classList.add('rect');
-        rect.style.width = w + 'px';
-        rect.style.height = h + 'px';
-        rect.style.left = (img.offsetLeft + x) + 'px';
-        rect.style.top = (img.offsetTop + y) + 'px';
-      };
-		  
-		   window.plot2 = function(x, y, w, h) {
-        var rect = document.createElement('div');
-        document.querySelector('.demo-container').appendChild(rect);
-        rect.classList.add('rect2');
-        rect.style.width = w + 'px';
-        rect.style.height = h + 'px';
-        rect.style.left = (img.offsetLeft + x) + 'px';
-        rect.style.top = (img.offsetTop + y) + 'px';
-      };
-		  
-		   window.plot3 = function(x, y, w, h) {
-        var rect = document.createElement('div');
-        document.querySelector('.demo-container').appendChild(rect);
-        rect.classList.add('rect3');
-        rect.style.width = w + 'px';
-        rect.style.height = h + 'px';
-        rect.style.left = (img.offsetLeft + x) + 'px';
-        rect.style.top = (img.offsetTop + y) + 'px';
-      };
-    };
-  </script>
+        tracking.track('#img', tracker);
+        tracking.track('#img', tracker2);
+        tracking.track('#img', tracker3);
 
+        tracker.on('track', function(event) {
+          event.data.forEach(function(rect) {
+            window.plot(rect.x, rect.y, rect.width, rect.height);
+          });
+        });
+        
+        tracker2.on('track', function(event) {
+          event.data.forEach(function(rect) {
+            window.plot2(rect.x, rect.y, rect.width, rect.height);
+          });
+        });
+        
+        tracker3.on('track', function(event) {
+          event.data.forEach(function(rect) {
+            window.plot3(rect.x, rect.y, rect.width, rect.height);
+          });
+        });
+        
+        window.plot = function(x, y, w, h) {
+          var rect = document.createElement('div');
+          document.querySelector('.demo-container').appendChild(rect);
+          rect.classList.add('rect');
+          rect.style.width = w + 'px';
+          rect.style.height = h + 'px';
+          rect.style.left = (img.offsetLeft + x) + 'px';
+          rect.style.top = (img.offsetTop + y) + 'px';
+        };
+        
+        window.plot2 = function(x, y, w, h) {
+          var rect = document.createElement('div');
+          document.querySelector('.demo-container').appendChild(rect);
+          rect.classList.add('rect2');
+          rect.style.width = w + 'px';
+          rect.style.height = h + 'px';
+          rect.style.left = (img.offsetLeft + x) + 'px';
+          rect.style.top = (img.offsetTop + y) + 'px';
+        };
+        
+        window.plot3 = function(x, y, w, h) {
+          var rect = document.createElement('div');
+          document.querySelector('.demo-container').appendChild(rect);
+          rect.classList.add('rect3');
+          rect.style.width = w + 'px';
+          rect.style.height = h + 'px';
+          rect.style.left = (img.offsetLeft + x) + 'px';
+          rect.style.top = (img.offsetTop + y) + 'px';
+        };
+      };
+    </script>
+    <div id="alrt" style="display: none;">
+      <span style="font-size: 30px; color: #fff;"><br><span style="color: #f92673">rotate</span> your <span style="color: #f92673">device</span></span>
+	  </div>
   </body>
 </html>
