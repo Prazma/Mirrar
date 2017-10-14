@@ -101,7 +101,7 @@
       }
     </style>
   </head>
-  <body>
+  <body onload="chkOrien()">
     <div class="demo-title">
       <span style="font-size: 30px; color: #fff;">port<span style="color: #f92673">ai</span></span>
     </div>
@@ -114,8 +114,10 @@
     </div>
     
     <script>
-      if(window.innerHeight > window.innerWidth){
-        document.getElementById("alrt").style.display = "block";
+      function chkOrien() {
+        if(window.innerHeight > window.innerWidth){
+          document.getElementById("alrt").style.display = "block";
+        }
       }
       $(window).on("orientationchange",function(){
         if(window.orientation == 0) {
